@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>道 · Tao — Music Theme Reference</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0c0a;
+    --bg2: #131210;
+    --bg3: #1a1915;
+    --surface: #1f1e1a;
+    --surface2: #252420;
+    --border: rgba(180,155,90,0.12);
+    --border2: rgba(180,155,90,0.22);
+    --gold: #c4a84f;
+    --gold-dim: rgba(196,168,79,0.6);
+    --gold-glow: rgba(196,168,79,0.08);
+    --text: #e8e2d4;
+    --text2: #a89e88;
+    --text3: #6b6355;
+    --white: #f2ede3;
+    --tag-core: #7a9e6e;
+    --tag-polarity: #8a6eb0;
+    --tag-state: #b08a4a;
+    --tag-nature: #5e8aa0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    min-height: 100vh;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 8rem 2rem 5rem;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-char {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(80px, 15vw, 140px);
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    display: block;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--white);
+    margin-bottom: 0.8rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.8s forwards;
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--text3);
+    font-style: italic;
+    max-width: 480px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeUp 1s ease 1s forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CONTROLS */
+  .controls-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,12,10,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.85rem 2rem;
+  }
+
+  .controls {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    padding: 4px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text3);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { color: var(--text2); border-color: var(--gold-dim); }
+  .filter-btn.active { color: var(--gold); border-color: var(--gold); background: var(--gold-glow); }
+
+  .expand-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 4px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text3);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .expand-btn:hover { color: var(--text2); }
+
+  .copy-btn {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 4px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text3);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { color: var(--gold); border-color: var(--gold-dim); }
+  .copy-btn.copied { color: var(--tag-nature); border-color: var(--tag-nature); }
+
+  /* MAIN */
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 6rem;
+  }
+
+  /* CARDS */
+  .cards { display: flex; flex-direction: column; gap: 6px; }
+
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--bg2);
+    transition: border-color 0.25s;
+  }
+  .card:hover { border-color: var(--border2); }
+  .card.open { border-color: rgba(196,168,79,0.2); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 22px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .card-header:hover { background: var(--bg3); }
+
+  .hanzi {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    min-width: 50px;
+    text-align: center;
+    text-shadow: 0 0 30px rgba(196,168,79,0.3);
+  }
+
+  .header-text { flex: 1; min-width: 0; }
+
+  .pinyin {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .english-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 12px;
+    border: 1px solid;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .chevron {
+    font-size: 10px;
+    color: var(--text3);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    flex-shrink: 0;
+  }
+  .card.open .chevron { transform: rotate(180deg); }
+
+  /* CARD BODY */
+  .card-body {
+    display: none;
+    background: var(--bg3);
+    border-top: 1px solid var(--border);
+  }
+  .card.open .card-body { display: block; }
+
+  .section {
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold);
+    line-height: 1.7;
+    padding-left: 16px;
+    border-left: 1px solid var(--gold-dim);
+  }
+
+  .body-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text2);
+    line-height: 1.8;
+  }
+
+  /* DIVIDER */
+  .divider {
+    text-align: center;
+    padding: 2.5rem 0 2rem;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+  }
+
+  /* FOOTER */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text3);
+  }
+  .footer span { color: var(--gold-dim); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    .hero { padding: 5rem 1.5rem 4rem; }
+    .main { padding: 2rem 1rem 5rem; }
+    .controls-wrap { padding: 0.75rem 1rem; }
+    .tag { display: none; }
+    .copy-btn { display: none; }
+    .card-header { padding: 14px 16px; gap: 14px; }
+    .section { padding: 16px; }
+    .hanzi { font-size: 28px; min-width: 38px; }
+    .english-title { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="hero-char">道</span>
+  <p class="hero-label">道德經 · Tao Te Ching</p>
+  <h1 class="hero-title">Music Theme Keyword Reference</h1>
+  <p class="hero-sub">21 core concepts from Lao Tzu — for deep focus, chill & Zen atmospheric music.</p>
+</div>
+
+<div class="controls-wrap">
+  <div class="controls">
+    <button class="filter-btn active" onclick="filter('all',this)">All</button>
+    <button class="filter-btn" onclick="filter('core',this)">Core Tao</button>
+    <button class="filter-btn" onclick="filter('polarity',this)">Polarity</button>
+    <button class="filter-btn" onclick="filter('state',this)">Inner State</button>
+    <button class="filter-btn" onclick="filter('nature',this)">Nature</button>
+    <button class="expand-btn" onclick="toggleAll()">Expand all</button>
+    <button class="copy-btn" id="copyBtn" onclick="copyMarkdown()">Copy as markdown</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="cards" id="cards"></div>
+</div>
+
+<div class="footer">
+  <span>道</span> · TAO — Channel Reference · For internal use
+</div>
+
+<script>
+const data = [
+  {
+    pinyin:"Tao", hanzi:"道", english:"The Way", tag:"core",
+    quote:"The Tao that can be told is not the eternal Tao. The name that can be named is not the eternal name. The nameless is the beginning of heaven and earth. — Ch. 1",
+    teaching:"The opening verse immediately dismantles our most fundamental habit: the belief that naming a thing is the same as knowing it. Lao Tzu's Tao is the ground beneath all reality — not a god, not a force, not a philosophy, but the source that precedes language itself. The paradox is intentional: the moment you define the Tao, you have already missed it. This is the first and most radical teaching — reality is larger than our concepts of it. The Tao functions like water: it has no fixed shape, yet it shapes everything. It does not announce itself, yet nothing exists without it.",
+    application:"In work: stop chasing frameworks and systems as substitutes for genuine understanding. The meeting that can be perfectly minuted is probably the meeting that missed the point. In relationships: presence — showing up fully — is closer to Tao than any declaration. In daily life: practice sitting with not-knowing. Resist the urge to immediately label every experience good or bad."
+  },
+  {
+    pinyin:"Wu Wei", hanzi:"無為", english:"Non-action / Effortless Flow", tag:"core",
+    quote:"The Tao does nothing, yet leaves nothing undone. If powerful men and women could center themselves in it, the whole world would be transformed by itself. — Ch. 37",
+    teaching:"Wu Wei is the most misunderstood concept in Taoism — it does not mean laziness or passivity. It means action so perfectly aligned with the nature of a situation that it requires no effort, no force, no resistance. Think of a skilled sailor who does not fight the wind but reads it. The wind does the work; the sailor does the steering. The greatest leaders create conditions in which things flourish naturally, then step back. The mark of Wu Wei is that when the work is done, people say: we did it ourselves.",
+    application:"In work: the best project managers remove obstacles rather than add processes. The team that is micromanaged cannot find its own rhythm. In creativity: the best creative work often comes not from forcing output but from sustained, relaxed attention — the 'flow state' is literally Wu Wei. In relationships: trying to change a partner through pressure is the opposite of Wu Wei. Creating safety for them to change naturally is its expression."
+  },
+  {
+    pinyin:"Qi", hanzi:"氣", english:"Vital Energy / Breath", tag:"core",
+    quote:"Can you coax your mind to stillness? Can you discipline your vital energy, nourishing the child within you? — Ch. 10",
+    teaching:"Qi is the animating breath of the universe — the same energy that moves through wind, through rivers, through the body. Breath is the bridge between the conscious and the unconscious — the one bodily function that operates both automatically and voluntarily. By consciously returning to breath, we return to the body's intelligence. The 'child within' is the unformed, unforced self before social conditioning layers over it. Nourishing Qi means protecting that original vitality from the depletion of anxiety, ambition, and overstimulation.",
+    application:"In daily life: breathwork, slow movement, and rest are not luxuries — they are maintenance of the fundamental energy system. In work: a burned-out team has depleted Qi. High performance requires recovery cycles, not just push cycles. In relationships: learn to recognize when your energy is being drained versus genuinely given — both matter."
+  },
+  {
+    pinyin:"De", hanzi:"德", english:"Virtue / Inner Power", tag:"core",
+    quote:"A person of superior virtue does not display virtue, and in this way has virtue. A person of inferior virtue cannot let go of virtue, and in this way lacks virtue. — Ch. 38",
+    teaching:"De is the second word in the title Tao Te Ching. It is the power that flows through a being when they are fully aligned with the Tao. Chapter 38 makes a sharp distinction: genuine virtue is unselfconscious — it does not perform itself, does not label itself, does not need external confirmation. The moment you begin trying to appear virtuous, you have already left the field of De. This is deeply counterintuitive in a culture that rewards visible goodness and performative ethics.",
+    application:"In work: the leader with genuine De inspires trust without demanding it. Their authority comes from who they are, not from their title. In daily life: notice the difference between doing something good and posting about it — one is De, one is its performance. In relationships: the partner with De makes you feel supported without feeling managed. Their care is in the quality of their attention, not in its advertisement."
+  },
+  {
+    pinyin:"Miao", hanzi:"妙", english:"Mystery / The Subtle", tag:"core",
+    quote:"Ever desireless, one can see the mystery. Ever desiring, one can see only the manifestations. — Ch. 1",
+    teaching:"Miao is the subtle, mysterious, marvelous quality of the Tao that cannot be grasped through analysis or desire. Chapter 1 makes a profound epistemological claim: desire narrows perception. When you want something, you can only see what is relevant to getting it. When you release desire, the whole picture opens up — the mystery becomes accessible. Miao is the texture of that deeper seeing.",
+    application:"In work: approaching a business problem without immediately jumping to solutions allows the deeper structure of the problem to reveal itself. The best consultants cultivate Miao by staying curious longer. In daily life: practice approaching familiar things as if you have never seen them before. The ordinary world is Miao when perception is fresh. In relationships: the mystery of another person is preserved by not assuming you already know them completely."
+  },
+  {
+    pinyin:"Yin", hanzi:"陰", english:"Yin / The Dark Principle", tag:"polarity",
+    quote:"The ten thousand things carry yin and embrace yang. They achieve harmony by combining these forces. — Ch. 42",
+    teaching:"Yin is the dark, cool, receptive, interior, feminine principle — not in gender terms, but in energetic quality. Chapter 42 is cosmological: the Tao generates One, One generates Two (Yin and Yang), Two generates Three, Three generates the ten thousand things. Yin is not negative — it is half of the generative tension that makes creation possible. Without Yin's receptivity, Yang's energy has nowhere to land. Yin is the night, the winter, the root, the inhale before the exhale.",
+    application:"In daily life: the culture glorifies Yang — output, speed, visibility, doing. Yin is everything that supports it: sleep, reflection, processing, receiving. Honor both. In work: the intake phase of a project (research, listening, sitting with a problem) is Yin. The output phase is Yang. Neither works without the other. In relationships: the capacity to receive — love, help, criticism — is Yin. Many people are strong in Yang but weak in Yin."
+  },
+  {
+    pinyin:"Yang", hanzi:"陽", english:"Yang / The Light Principle", tag:"polarity",
+    quote:"The ten thousand things carry yin and embrace yang. They achieve harmony by combining these forces. — Ch. 42",
+    teaching:"Yang is the bright, warm, active, outward, masculine principle of energy. It is the initiating force — the exhale, the summer, the branch reaching toward light, the creative impulse that moves outward into form. Yang without Yin becomes burnout, aggression, and depletion. In Chinese cosmology, Yang is never more valuable than Yin — they are co-arising and co-dependent. The sun gives light, but only because there is space for the light to travel through.",
+    application:"In work: execution, leadership, visibility, momentum — all Yang qualities. These are necessary but must be balanced with their Yin counterparts: strategy, listening, patience, recovery. In daily life: recognize your own Yang peaks — times of high energy, drive, and outward focus — and work with them rather than forcing them at the wrong time. In relationships: take initiative, be present, pursue — but also pause and receive."
+  },
+  {
+    pinyin:"Xu", hanzi:"虛", english:"Emptiness / Void", tag:"polarity",
+    quote:"Thirty spokes share the hub of a wheel; it is the center hole that makes it useful. Shape clay into a vessel; it is the space within that makes it useful. — Ch. 11",
+    teaching:"This is one of Lao Tzu's most elegant arguments — and the most counterintuitive. We fixate on the solid, the visible, the full. But Chapter 11 methodically demonstrates that usefulness comes from emptiness: the hole in the wheel, the hollow of the bowl, the empty rooms of a house. A mind that is already full of its own opinions cannot receive anything new. Xu is not absence — it is potential. It is the womb-condition of all creation.",
+    application:"In work: leave slack in your calendar. The 'wasted' hour is often where the best thinking happens. In creativity: writer's block often lifts when you stop trying to fill the page and let it be empty for a moment. In relationships: leave space in conversations — the silence after someone speaks is where they discover what they actually meant to say."
+  },
+  {
+    pinyin:"Kong", hanzi:"空", english:"Empty Space / Open", tag:"polarity",
+    quote:"We join spokes together in a wheel, but it is the center hole that makes the wagon move. — Ch. 11",
+    teaching:"Kong emphasizes the functional emptiness — the open space that makes things work. The pause between notes that makes music. The space between words that gives them meaning. The gap in thinking that allows insight to arrive. In Zen and Chan traditions derived from Taoism, Kong becomes foundational: all things are empty of fixed self-nature, and this emptiness is what makes change, growth, and connection possible.",
+    application:"In work: unstructured time is not lost productivity — it is the processing space between inputs. The best ideas rarely come during meetings; they come in the empty moments after. In creativity: the rest between musical phrases, the white space in design — these are not absence but form. In relationships: Kong is the comfortable silence between people who know each other deeply."
+  },
+  {
+    pinyin:"Rou", hanzi:"柔", english:"Softness / Yielding", tag:"polarity",
+    quote:"The living are soft and yielding; the dead are rigid and stiff. Living plants are flexible and tender; the dead are brittle and dry. — Ch. 76",
+    teaching:"Chapter 76 makes a biological argument for a philosophical principle. Life is inherently soft — the newborn baby, the young branch, the flowing stream. Rigidity is the property of what has ceased to grow. Softness is not weakness; it is the signature of aliveness. Hardness wins the moment; softness wins across time. Water, the Tao's favorite metaphor, is yielding — it goes around every obstacle — yet it carves the Grand Canyon.",
+    application:"In work: the leader who can change their mind when given new information is stronger than the one who holds their position at all costs. Adaptability is Rou. In negotiation: the negotiator who can genuinely yield on secondary points often wins on primary ones. In relationships: the ability to apologize, to soften, to de-escalate — this is what keeps relationships alive."
+  },
+  {
+    pinyin:"Jing", hanzi:"靜", english:"Stillness / Tranquility", tag:"state",
+    quote:"Return to the root is called stillness. Stillness is called returning to one's destiny. — Ch. 16",
+    teaching:"Chapter 16 describes a meditative arc: watch the ten thousand things arise, flourish, and return — each one eventually falling back to its root. That return is Jing, stillness. Not the stillness of death, but the stillness of completion — like a wave that has fully broken on the shore. Lao Tzu is saying that stillness is not an absence but a destination; it is where everything goes when it has fully expressed itself.",
+    application:"In daily life: build 'return points' into your routine — brief moments of doing nothing, not as laziness but as completion. In work: a meeting without a moment of pause before decisions is a meeting without wisdom. In relationships: arguments that never reach stillness never reach resolution — the quieting after conflict is not weakness, it is the return to root."
+  },
+  {
+    pinyin:"He", hanzi:"和", english:"Harmony", tag:"state",
+    quote:"Know harmony, and you will know the eternal. Know the eternal, and you will be enlightened. — Ch. 55",
+    teaching:"Harmony in the Taoist sense is not uniformity — it is the dynamic balance of forces that naturally tend toward each other. Chapter 55 places harmony as a bridge to the eternal — meaning that harmony is not just pleasant, it is a form of truth. A harmonious system is one in which nothing needs to be forced, nothing is wasted, and the parts support each other without dominating.",
+    application:"In work: team harmony is not everyone agreeing — it is every voice finding its natural role. Forced consensus is its opposite. In daily life: notice when your inner life is in conflict — ambition versus rest, connection versus solitude — and seek the arrangement that lets both breathe. In relationships: harmony requires that both people's natures are honored, not that one adapts entirely to the other."
+  },
+  {
+    pinyin:"Pu", hanzi:"樸", english:"Simplicity / The Uncarved Block", tag:"state",
+    quote:"I have just three things to teach: simplicity, patience, compassion. These three are your greatest treasures. — Ch. 67",
+    teaching:"Pu is the image of wood before it is carved — not primitive, but original. It holds all possibilities precisely because no particular form has yet been imposed on it. Lao Tzu consistently returns to simplicity not as an aesthetic preference but as a survival strategy: complex systems collapse under their own weight; simple systems endure. The three treasures in Chapter 67 are remarkable because they are entirely internal — you need nothing external to acquire them.",
+    application:"In work: complexity in a business model is often a sign of unresolved confusion, not sophistication. The strategy you can explain in one sentence is stronger than the one requiring a deck. In daily life: simplify possessions, commitments, and digital consumption — not as minimalism trend, but to restore the condition of Pu. In relationships: the most durable love is built on simple, repeated acts of presence — not grand gestures."
+  },
+  {
+    pinyin:"Shan", hanzi:"善", english:"Goodness / Virtue in Action", tag:"state",
+    quote:"The highest good is like water. Water gives life to the ten thousand things and does not strive. — Ch. 8",
+    teaching:"Chapter 8 defines goodness not through moral prescription but through the behavior of water. Water is Lao Tzu's most recurring metaphor because it perfectly embodies Shan: it nourishes without demanding, it takes the lowest position without complaint, it adapts to any container, it wears away stone not through force but through patience. Shan is virtue that flows naturally — not virtue performed for reputation or reward.",
+    application:"In work: the best colleagues are often the quiet contributors — those who make everyone else better without seeking credit. In daily life: practice kindness in unobserved moments — the test of genuine Shan is that it doesn't require an audience. In relationships: Shan is the partner who supports quietly, who does the unglamorous work of love without resentment."
+  },
+  {
+    pinyin:"Ci", hanzi:"慈", english:"Compassion / Loving-kindness", tag:"state",
+    quote:"I have three treasures which I hold and keep. The first is mercy. The second is economy. The third is daring not to be first in the world. — Ch. 67",
+    teaching:"Ci is the first of Lao Tzu's three treasures, and deliberately listed first. In Chapter 67's logic, Ci enables courage: from mercy comes bravery, because you fight to protect what you love, not to prove yourself. This reframes courage entirely — not as the absence of fear, but as the overflow of Ci. The sage is brave not because they are unafraid but because they care too much to step back.",
+    application:"In work: compassionate leadership is not soft leadership — it is leadership with the courage to make hard decisions in service of people's actual wellbeing. In daily life: extend Ci first to yourself — not as self-indulgence, but as the necessary condition for extending it outward. In relationships: Ci is the active choice to orient toward your partner's flourishing, even when the relationship is difficult."
+  },
+  {
+    pinyin:"Gan", hanzi:"感", english:"Resonance / Feeling", tag:"state",
+    quote:"The sage does not accumulate. The more he does for others, the more he has. The more he gives to others, the more he possesses. — Ch. 81",
+    teaching:"Gan is feeling in its deepest sense — not emotion as reaction, but resonance as connection. The final chapter of the Tao Te Ching describes the sage as someone who gives completely and is thereby made complete — a paradox only possible if the sage is not defended against feeling. Gan is the openness that makes genuine connection possible. It is what is lost when people armor themselves against vulnerability.",
+    application:"In work: leaders who can be genuinely moved by their team's struggles and successes create loyalty that compensation cannot buy. In daily life: let music, nature, and beauty actually touch you — not as content to consume but as experience to receive. In relationships: Gan is the capacity for genuine empathy — not performed sympathy, but actual resonance with another person's inner state."
+  },
+  {
+    pinyin:"Gui", hanzi:"歸", english:"Return / Homecoming", tag:"state",
+    quote:"Returning to the root is called stillness. Returning to one's destiny is called the eternal. — Ch. 16",
+    teaching:"Gui is the movement of return — not regression, but a cyclical homecoming. Chapter 16 uses the imagery of vegetation: all things grow outward, flourish, then return to the root from which they came. This is not tragedy; it is completion. Lao Tzu frames return as the gateway to the eternal — the willingness to release, to come back to center, to begin again from groundedness, is the path to wisdom. Return is always available.",
+    application:"In work: after every major project or season of intensity, build in a return — a period of reflection and reset before charging forward again. In daily life: spiritual practice is fundamentally Gui — returning again and again to breath, to the present moment, to what actually matters. In relationships: the capacity to repair — to return to warmth after conflict — is one of the most important skills. Gui makes repair possible."
+  },
+  {
+    pinyin:"Ding", hanzi:"定", english:"Stability / Groundedness", tag:"state",
+    quote:"Do you have the patience to wait until your mud settles and the water is clear? — Ch. 15",
+    teaching:"Chapter 15 describes the ancient masters through paradoxical images — crossing ice, watching strangers, melting like ice. But the central teaching is Ding: the capacity to wait for clarity rather than forcing a decision through murky water. Ding is not rigidity — it is the groundedness that allows you to function without being swept away by urgency, panic, or the pressure of others' expectations. You cannot clear muddy water by stirring it harder.",
+    application:"In work: the most expensive decisions in business are often those made in panic or in the heat of a moment. Ding is the pause before the irreversible email, the breath before the difficult conversation. In daily life: stability in the body creates stability in mind — they are not separate. In relationships: the person who can remain grounded during a partner's emotional storm is practicing Ding — one of the most stabilizing gifts you can offer."
+  },
+  {
+    pinyin:"Zi Ran", hanzi:"自然", english:"Naturalness / Self-so", tag:"nature",
+    quote:"Humanity follows Earth. Earth follows Heaven. Heaven follows the Tao. The Tao follows its own nature. — Ch. 25",
+    teaching:"Zi Ran literally means 'self-so' — that which is so by itself, without external cause or forcing. It is Lao Tzu's ultimate authority: the Tao does not follow rules or gods or ideals. It simply is what it naturally is. The practical teaching is that authenticity — being what you actually are, rather than performing what you think you should be — is the human expression of Zi Ran.",
+    application:"In work: organizations that grow naturally from a genuine purpose outperform those built to chase metrics. In daily life: notice when you are being Zi Ran — natural, easy, unperformed — versus when you are executing a role. In relationships: the most sustaining connections are those where both people can be self-so — without editing, without performance."
+  },
+  {
+    pinyin:"You", hanzi:"遊", english:"Wandering / Purposeless Roaming", tag:"nature",
+    quote:"The Tao is like an empty vessel that yet may be drawn from without ever needing to be filled. How still it is, how deep — the ancestor of all things. — Ch. 4",
+    teaching:"You is the Taoist ideal of movement without goal — not aimlessness born of confusion, but the ease of moving through life without forcing a destination. The Chuang Tzu uses You extensively: the sage wanders, the fish swims, the bird flies — each perfectly expressing its nature without striving. You is what children do naturally in unstructured play. It is attention without agenda.",
+    application:"In daily life: build purposeless time into your week — genuine open wandering, whether physical (walking without destination) or mental (reading without a reason). In work: the brainstorm that wanders beyond its brief often finds the best idea. Over-facilitated ideation sessions lose You. In relationships: the couple that can be together without agenda — no task, no conversation goal — has something rare and durable."
+  },
+  {
+    pinyin:"Shi", hanzi:"時", english:"Time / The Right Moment", tag:"nature",
+    quote:"To everything there is a season. The sage does not rush, does not lag. Moving with the moment is the Tao. — Ch. 8 (contextual)",
+    teaching:"Shi is temporal wisdom — not just time management, but the Taoist sense of kairos: the right action at the right moment. Lao Tzu consistently implies that much suffering comes from acting at the wrong time — forcing spring in winter, rushing harvest, speaking when silence is needed. Wisdom involves reading cycles accurately. Shi requires both patience (not forcing before the moment is ripe) and decisiveness (not hesitating when the moment arrives).",
+    application:"In work: timing is the underrated variable in most strategic decisions. The right move at the wrong time fails; the same move at the right time succeeds. In daily life: honor the natural rhythms of your energy, your season of life, and the relational timing of conversations. In relationships: the conversation that fails in anger often succeeds after rest. Shi is knowing the difference."
+  }
+];
+
+const tagStyles = {
+  core:     { color:'#7a9e6e', bg:'rgba(122,158,110,0.08)', label:'Core Tao' },
+  polarity: { color:'#8a6eb0', bg:'rgba(138,110,176,0.08)', label:'Polarity' },
+  state:    { color:'#b08a4a', bg:'rgba(176,138,74,0.08)',  label:'Inner State' },
+  nature:   { color:'#5e8aa0', bg:'rgba(94,138,160,0.08)', label:'Nature' }
+};
+
+let activeFilter = 'all';
+let allExpanded = false;
+
+function render() {
+  const container = document.getElementById('cards');
+  const filtered = activeFilter === 'all' ? data : data.filter(d => d.tag === activeFilter);
+  container.innerHTML = filtered.map((d, i) => {
+    const ts = tagStyles[d.tag];
+    return `
+    <div class="card" id="card-${i}">
+      <div class="card-header" onclick="toggle(${i})">
+        <div class="hanzi">${d.hanzi}</div>
+        <div class="header-text">
+          <div class="pinyin">${d.pinyin}</div>
+          <div class="english-title">${d.english}</div>
+        </div>
+        <span class="tag" style="color:${ts.color};background:${ts.bg};border-color:${ts.color}40">${ts.label}</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="section">
+          <div class="section-label">Quote — Tao Te Ching</div>
+          <div class="quote-text">${d.quote}</div>
+        </div>
+        <div class="section">
+          <div class="section-label">Teaching</div>
+          <div class="body-text">${d.teaching}</div>
+        </div>
+        <div class="section">
+          <div class="section-label">Modern Application</div>
+          <div class="body-text">${d.application}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggle(i) {
+  document.getElementById('card-' + i).classList.toggle('open');
+}
+
+function filter(tag, btn) {
+  activeFilter = tag;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  allExpanded = false;
+  render();
+}
+
+function toggleAll() {
+  allExpanded = !allExpanded;
+  document.querySelectorAll('.card').forEach(c => c.classList.toggle('open', allExpanded));
+  document.querySelector('.expand-btn').textContent = allExpanded ? 'Collapse all' : 'Expand all';
+}
+
+function copyMarkdown() {
+  const header = '| Pinyin | 字 | English | Tao Te Ching Quote | Teaching | Modern Application |\n|--------|-----|---------|-------------------|----------|-------------------|\n';
+  const rows = data.map(d =>
+    `| **${d.pinyin}** | ${d.hanzi} | ${d.english} | ${d.quote.replace(/\n/g,' ')} | ${d.teaching.replace(/\n/g,' ')} | ${d.application.replace(/\n/g,' ')} |`
+  ).join('\n');
+  navigator.clipboard.writeText(header + rows).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy as markdown'; btn.classList.remove('copied'); }, 2500);
+  });
+}
+
+render();
+</script>
+</body>
+</html>
